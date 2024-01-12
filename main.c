@@ -15,5 +15,11 @@ int main(int argc, char const *argv[])
     Tokenize(code, tokens);
 
 
+
+    for(int x = 0; x < 7; x++){
+        printf("TYPE: %d VALUE: %s\n", tokens[x].type, tokens[x].value);
+    }
+
+
     return 0;
 }

@@ -15,7 +15,7 @@ enum TokenTypes{
     // Variable Types
     NUMBER,
     
-    NEWLINE // New Line
+    ENDLINE // End of Line
 };
 
 /// @brief Token Object
@@ -87,6 +87,13 @@ void Tokenize(char code[], struct Token* tokens){
             tokens[position++] = _token; // Adds Token to Token List
             token = strtok(NULL, " ");   // Next Word
         }
+
+        // End Line Token
+        struct Token endLine;
+        endLine.type = ENDLINE;
+        strcpy(endLine.value, ";");
+        tokens[position++] = endLine;
+
         line = strtok(NULL, ";"); // Next Line
     }
 }

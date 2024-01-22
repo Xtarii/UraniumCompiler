@@ -1,2 +1,6 @@
 /.vscode
 main.exe
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile

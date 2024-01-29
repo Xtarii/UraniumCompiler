@@ -18,6 +18,7 @@ typedef struct TOKEN_STRUCT{
 
         SEMICOLON, // Semicolon
         ENDLINE,   // End of Line
+        ENDOFFILE, // End of File
     } type;
     char* value;
 } token_s;

@@ -40,11 +40,20 @@ char* lexer_getCurrentCharAsString(lexer_s* lexer){
 }
 
 
+/// @brief Skips White Space
+/// @param lexer LEXER
+/// @param token TOKEN
+/// @return token
 token_s* lexer_nextWithToken(lexer_s* lexer, token_s* token){
     lexer_next(lexer);
     return token;
 }
+
+/// @brief Reads String
+/// @param lexer LEXER
+/// @return String
 token_s* lexer_getTokenString(lexer_s* lexer){
+    lexer_next(lexer);
     char* value = calloc(1, sizeof(char));
     value[0] = '\0';
 
@@ -55,9 +64,13 @@ token_s* lexer_getTokenString(lexer_s* lexer){
         strcat(value, string);
         lexer_next(lexer); // Next Token
     }
+    lexer_next(lexer);
     return init_token(STRING, value);
 }
-token_s* lexer_getTokenNumber(lexer_s* lexer){
+/// @brief Reads Number
+/// @param lexer LEXER
+/// @return Number
+token_s* lexer_getTokenIdentifier(lexer_s* lexer){
     char* value = calloc(1, sizeof(char));
     value[0] = '\0';
 
@@ -68,39 +81,42 @@ token_s* lexer_getTokenNumber(lexer_s* lexer){
         strcat(value, string);
         lexer_next(lexer); // Next Token
     }
-    return init_token(NUMBER, value);
+    return init_token(IDENTIFIER, value);
 }
 
+
+
+/// @brief Next Token
+/// @param lexer LEXER
+/// @return Token
 token_s* lexer_nextToken(lexer_s* lexer){
     while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)){
         if(lexer->c == ' ' || lexer->c == 10)
             lexer_skipWhiteSpace(lexer);
 
         
+
+        // Number Token
+        if(isalnum(lexer->c))
+            return lexer_getTokenIdentifier(lexer);
         // String Token
         if(lexer->c == '"')
             return lexer_getTokenString(lexer);
-        // Number Token
-        if(isalnum(lexer->c))
-            return lexer_getTokenNumber(lexer);
 
         // Token Type Lexing
         switch(lexer->c){
             /* OPERATOR TOKEN */
-            case '=':
-                return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
-                break;
-            case '+':
-                return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
-                break;
+            case '=': return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
+            case '+': return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
+
+            case '(': return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
+            case ')': return lexer_nextWithToken(lexer, init_token(OPERATOR, lexer_getCurrentCharAsString(lexer)));
 
             
             /* ENDLINE TOKEN */
-            case ';':
-                return lexer_nextWithToken(lexer, init_token(SEMICOLON, lexer_getCurrentCharAsString(lexer)));
-                break;
+            case ';': return lexer_nextWithToken(lexer, init_token(SEMICOLON, lexer_getCurrentCharAsString(lexer)));
         }
     }
 
-    return (void*)0;
+    return init_token(ENDOFFILE, "\0");
 }

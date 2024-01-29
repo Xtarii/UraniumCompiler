@@ -31,7 +31,7 @@ token_s* lexer_getTokenString(lexer_s* lexer);
 /// @brief Get Token Identifier Value
 /// @param lexer LEXER
 /// @return Identifier
-token_s* lexer_getTokenNumber(lexer_s* lexer);
+token_s* lexer_getTokenIdentifier(lexer_s* lexer);
 /// @brief Gets Next Token with Token
 /// @param lexer LEXER
 /// @return Token

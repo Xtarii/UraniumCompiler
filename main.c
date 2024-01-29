@@ -1,10 +1,6 @@
-// #include "formater/headers/token.h"
-// #include "formater/tokenizer.c"
-// #include "formater/parser/astnode.c"
-
-
 #include <stdio.h>
 #include "src/include/lexer.h"
+#include "src/include/parser.h"
 
 
 
@@ -14,32 +10,21 @@
 /// @return Execution Status
 int main(int argc, char const *argv[])
 {
-    char code[] = "int myVar = 5; int myOtherVar = 10;"; // Code Test
-
-
     // Lexer
     lexer_s* lexer = init_lexer(
-        "int myVar = 5;\n"
-        "int myOtherVar = 5;\n"
+        "string name = \"Alvin Hansen\";"
+        "string t = \"Hello World\";"
+
+        "myFunc();"
     );
-    token_s* token = (void*)0;
-
     
-    // Lexing Tokens
-    while((token == lexer_nextToken(lexer)) != (void*)0){
-        printf("TOKEN(%d : %s)\n", token->type, token->value);
-    }
+    // Parser
+    parser_s* parser = init_parser(lexer);
+    ast_s* tree = parser_parse(parser);
 
 
-
-
-    // // Setup
-    // //GenerateDynamicList(code);
-
-
-    // // Compiler
-    // Tokenize(code); // Tokenizing code String to Token List
-    // parse();        // Parsing Token List to AST
+    printf("%d\n", tree->type);
+    printf("%d\n", tree->compound_size);
 
 
     return 0;
